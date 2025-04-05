@@ -67,11 +67,11 @@ function loadMovies() {
         let movieElements = document.querySelectorAll('.movie-list-item');
         let usedIndexes = new Set();
 
-        movieElements.forEach((movieElement, index) => {
+        movieElements.forEach((movieElement) => {
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * movies.length);
-            } while (usedIndexes.has(randomIndex));
+            } while (usedIndexes.has(randomIndex)); // Avoid repetition
             usedIndexes.add(randomIndex);
 
             let movie = movies[randomIndex];
@@ -80,12 +80,12 @@ function loadMovies() {
             movieElement.querySelector('.movie-list-item-title').textContent = movie.name;
             movieElement.querySelector('.movie-list-item-desc').textContent = movie.description;
 
-            // Add event listener to button
-            movieElement.querySelector('.movie-details-btn').addEventListener('click', () => {
+            // Add event listener to the button
+            movieElement.querySelector('.movie-list-item-button').addEventListener('click', () => {
                 let movieDetails = {
                     name: movie.name,
                     poster: movie.poster,
-                    year: movie.year,  // Make sure your CSV has this column
+                    year: movie.year,  // Ensure your CSV has this column
                     rating: movie.rating,
                     description: movie.description
                 };
@@ -96,4 +96,3 @@ function loadMovies() {
     }
 
     loadMovies();
-</script>
