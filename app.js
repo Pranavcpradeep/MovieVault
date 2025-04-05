@@ -45,9 +45,9 @@ function goToGenre(genre) {
 
 
 
-    let movies = [];
+let movies = [];
 
-    function loadMovies() {
+function loadMovies() {
         fetch('movies.csv')
             .then(response => response.text())
             .then(csvText => {
@@ -64,23 +64,36 @@ function goToGenre(genre) {
     }
 
     function assignRandomMovies() {
+        let movieElements = document.querySelectorAll('.movie-list-item');
         let usedIndexes = new Set();
 
-        for (let i = 1; i <= 3; i++) { // Assuming 3 movie sections
+        movieElements.forEach((movieElement, index) => {
             let randomIndex;
             do {
                 randomIndex = Math.floor(Math.random() * movies.length);
-            } while (usedIndexes.has(randomIndex)); // Ensure unique selection
+            } while (usedIndexes.has(randomIndex));
             usedIndexes.add(randomIndex);
 
             let movie = movies[randomIndex];
-            
-            document.getElementById(`movie-poster-${i}`).src = `img/${movie.poster}`;
-            document.getElementById(`movie-title-${i}`).textContent = movie.name;
-            document.getElementById(`movie-rating-${i}`).textContent = `Rating: ${movie.rating}`;
-            document.getElementById(`movie-genre-${i}`).textContent = `Genre: ${movie.genre1}, ${movie.genre2}`;
-            document.getElementById(`movie-description-${i}`).textContent = movie.description;
-        }
+
+            movieElement.querySelector('.movie-list-item-img').src = `img/${movie.poster}`;
+            movieElement.querySelector('.movie-list-item-title').textContent = movie.name;
+            movieElement.querySelector('.movie-list-item-desc').textContent = movie.description;
+
+            // Add event listener to button
+            movieElement.querySelector('.movie-details-btn').addEventListener('click', () => {
+                let movieDetails = {
+                    name: movie.name,
+                    poster: movie.poster,
+                    year: movie.year,  // Make sure your CSV has this column
+                    rating: movie.rating,
+                    description: movie.description
+                };
+                localStorage.setItem('selectedMovie', JSON.stringify(movieDetails));
+                window.location.href = 'details.html';
+            });
+        });
     }
 
     loadMovies();
+</script>
