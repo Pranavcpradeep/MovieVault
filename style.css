@@ -320,3 +320,42 @@ body {
   border-radius: 5px;
 }
 
+let movies = [];
+
+    function loadMovies() {
+        fetch('movies.csv')
+            .then(response => response.text())
+            .then(csvText => {
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        movies = results.data;
+                        assignRandomMovies();
+                    }
+                });
+            })
+            .catch(error => console.error('Error loading CSV:', error));
+    }
+
+    function assignRandomMovies() {
+        let movieElements = document.querySelectorAll(".movie");
+        let usedIndexes = new Set();
+
+        movieElements.forEach((element) => {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * movies.length);
+            } while (usedIndexes.has(randomIndex)); // Ensure unique selection
+            usedIndexes.add(randomIndex);
+
+            let movie = movies[randomIndex];
+            element.querySelector(".movie-poster").src = `img/${movie.poster}`;
+            element.querySelector(".movie-title").textContent = movie.name;
+            element.querySelector(".movie-rating").textContent = `Rating: ${movie.rating}`;
+            element.querySelector(".movie-genre").textContent = `Genre: ${movie.genre1}, ${movie.genre2}`;
+            element.querySelector(".movie-description").textContent = movie.description;
+        });
+    }
+
+    loadMovies();
