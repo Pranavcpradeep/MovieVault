@@ -7,27 +7,31 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
     <div class="movie-details">
         <img id="details-movie-img" src="" alt="Movie Poster">
         <h1 id="details-movie-title"></h1>
         <p id="details-movie-year"></p>
         <p id="details-movie-rating"></p>
         <p id="details-movie-desc"></p>
+        <a href="index.html" class="back-button">Back to Home</a>
     </div>
 
     <script>
-        // Load movie details from localStorage
-        let movieDetails = JSON.parse(localStorage.getItem('selectedMovie'));
+        document.addEventListener("DOMContentLoaded", () => {
+            let movieDetails = JSON.parse(localStorage.getItem('selectedMovie'));
 
-        if (movieDetails) {
-            document.getElementById('details-movie-img').src = `img/${movieDetails.poster}`;
-            document.getElementById('details-movie-title').textContent = movieDetails.name;
-            document.getElementById('details-movie-year').textContent = `Year: ${movieDetails.year || 'N/A'}`;
-            document.getElementById('details-movie-rating').textContent = `Rating: ${movieDetails.rating}`;
-            document.getElementById('details-movie-desc').textContent = movieDetails.description;
-        } else {
-            document.body.innerHTML = "<h2>No movie details found.</h2>";
-        }
+            if (movieDetails) {
+                document.getElementById('details-movie-img').src = `img/${movieDetails.poster}`;
+                document.getElementById('details-movie-title').textContent = movieDetails.name;
+                document.getElementById('details-movie-year').textContent = `Year: ${movieDetails.year || 'N/A'}`;
+                document.getElementById('details-movie-rating').textContent = `Rating: ${movieDetails.rating}`;
+                document.getElementById('details-movie-desc').textContent = movieDetails.description;
+            } else {
+                document.body.innerHTML = "<h2 class='error-message'>No movie details found.</h2>";
+            }
+        });
     </script>
+
 </body>
 </html>
